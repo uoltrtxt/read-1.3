@@ -1,0 +1,27 @@
+diff --git a/app.py b/app.py
+index abc1234..def5678 100644
+--- a/app.py
++++ b/app.py
+@@ -1,6 +1,10 @@
+-import os, psutil, openai, threading
++import os, psutil, openai, threading
++from dotenv import load_dotenv
+ 
+-import tkinter as tk
++import tkinter as tk
+ from tkinter import ttk, scrolledtext
+@@ -1,10 +1,14 @@
+-# 환경 변수에서 API 키 로드
+-openai.api_key = os.environ.get("OPENAI_API_KEY")
++# 1) .env 로드 및 API 키 검증
++load_dotenv()
++api_key = os.environ.get("OPENAI_API_KEY")
++if not api_key:
++    raise RuntimeError("환경 변수 OPENAI_API_KEY를 설정해주세요.")
++openai.api_key = api_key
+@@ -120,7 +124,7 @@ def task():
+-                "cpu": p.cpu_percent(interval=0.1),
++                "cpu": p.cpu_percent(interval=None),   # non-blocking 측정
+@@ -143,7 +147,7 @@ def task():
+-                model="o4-mini",
++                model="gpt-3.5-turbo",                  # 올바른 모델 ID
